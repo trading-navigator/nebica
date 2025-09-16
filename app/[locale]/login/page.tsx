@@ -53,28 +53,24 @@ export default async function Login({
     const supabase = createClient(cookieStore)
 
     const { data, error } = await supabase.auth.signInWithOAuth({
-      provider: "google"
+      provider: "google",
+      options: {
+        redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback` // adjust for your app
+      }
     })
 
     if (error) {
       return redirect(`/login?message=${error.message}`)
     }
 
-    const { data: homeWorkspace, error: homeWorkspaceError } = await supabase
-      .from("workspaces")
-      .select("*")
-      .eq("user_id", data.user.id)
-      .eq("is_home", true)
-      .single()
-
-    if (!homeWorkspace) {
-      throw new Error(
-        homeWorkspaceError?.message || "An unexpected error occurred"
-      )
+    // Supabase returns a URL to redirect the user for Google login
+    if (data?.url) {
+      return redirect(data.url)
     }
 
-    return redirect(`/${homeWorkspace.id}/chat`)
+    return redirect("/login?message=Unexpected OAuth error")
   }
+
   const signIn = async (formData: FormData) => {
     "use server"
 

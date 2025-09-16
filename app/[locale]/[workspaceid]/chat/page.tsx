@@ -19,24 +19,21 @@ export default function ChatPage() {
   useHotkey("l", () => {
     handleFocusChatInput()
   })
- const [user, setUser] = useState(false);
- const [loading, setLoading] = useState(false);
+  const [user, setUser] = useState(false)
+  const [loading, setLoading] = useState(false)
 
+  useEffect(() => {
+    ;(async () => {
+      setLoading(true)
+      const session = (await supabase.auth.getSession()).data.session
 
-
-useEffect(() => {
-  ;(async () => {
-    setLoading(true)
-    const session = (await supabase.auth.getSession()).data.session
- 
-    if (session) {
-      console.log("hihi")
-      setUser(true);
-    }
-  setLoading(false)
-  })()
-}, [])
-
+      if (session) {
+        console.log("hihi")
+        setUser(true)
+      }
+      setLoading(false)
+    })()
+  }, [])
 
   const { chatMessages } = useContext(ChatbotUIContext)
 
@@ -52,11 +49,10 @@ useEffect(() => {
             <Brand theme={theme === "dark" ? "dark" : "light"} />
           </div>
 
-         
-{ (!user && !loading )&&
-  (<div className="absolute right-4 top-4">
-  <Link
-    className="
+          {!user && !loading && (
+            <div className="absolute right-4 top-4">
+              <Link
+                className="
       rounded-full 
       bg-gradient-to-r from-blue-500 to-purple-600 
       px-5 py-2 
@@ -68,13 +64,12 @@ useEffect(() => {
       hover:from-blue-400 hover:to-purple-500 
       hover:shadow-xl
     "
-      href="/login"
-  >
-    Login
-  </Link>
-</div>
-)}
-
+                href="/login"
+              >
+                Login
+              </Link>
+            </div>
+          )}
 
           <div className="flex grow flex-col items-center justify-center" />
 

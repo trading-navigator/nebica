@@ -219,7 +219,7 @@ export const handleHostedChat = async (
   const requestBody = {
     chatSettings: payload.chatSettings,
     messages: formattedMessages,
-    customModelId: provider === "google"// remove here and add in api
+    customModelId: provider === "google" // remove here and add in api
   }
 
   const response = await fetchChatResponse(
@@ -299,16 +299,16 @@ export const processResponse = async (
           contentToAdd = isHosted
             ? chunk
             : // Ollama's streaming endpoint returns new-line separated JSON
-            // objects. A chunk may have more than one of these objects, so we
-            // need to split the chunk by new-lines and handle each one
-            // separately.
-            chunk
-              .trimEnd()
-              .split("\n")
-              .reduce(
-                (acc, line) => acc + JSON.parse(line).message.content,
-                ""
-              )
+              // objects. A chunk may have more than one of these objects, so we
+              // need to split the chunk by new-lines and handle each one
+              // separately.
+              chunk
+                .trimEnd()
+                .split("\n")
+                .reduce(
+                  (acc, line) => acc + JSON.parse(line).message.content,
+                  ""
+                )
           fullText += contentToAdd
         } catch (error) {
           console.error("Error parsing JSON:", error)
@@ -352,12 +352,11 @@ export const handleCreateChat = async (
   setChats: React.Dispatch<React.SetStateAction<Tables<"chats">[]>>,
   setChatFiles: React.Dispatch<React.SetStateAction<ChatFile[]>>
 ) => {
-
-  if(!profile?.user_id) return;
+  if (!profile?.user_id) return
   const createdChat = await createChat({
     user_id: profile?.user_id || "",
     workspace_id: selectedWorkspace.id,
-    assistant_id: selectedAssistant?.id || null,
+    assistant_id: selectedAssistant?.id ?? null,
     context_length: chatSettings.contextLength,
     include_profile_context: chatSettings.includeProfileContext,
     include_workspace_instructions: chatSettings.includeWorkspaceInstructions,
@@ -371,7 +370,6 @@ export const handleCreateChat = async (
   setSelectedChat(createdChat)
 
   setChats(chats => [createdChat, ...chats])
-
 
   await createChatFiles(
     newMessageFiles.map(file => ({
@@ -403,8 +401,7 @@ export const handleCreateMessages = async (
   setChatImages: React.Dispatch<React.SetStateAction<MessageImage[]>>,
   selectedAssistant: Tables<"assistants"> | null
 ) => {
-
-  if(!profile?.user_id) return;
+  if (!profile?.user_id) return
   const finalUserMessage: TablesInsert<"messages"> = {
     chat_id: currentChat.id,
     assistant_id: null,
@@ -452,8 +449,9 @@ export const handleCreateMessages = async (
     const uploadPromises = newMessageImages
       .filter(obj => obj.file !== null)
       .map(obj => {
-        let filePath = `${profile.user_id}/${currentChat.id}/${createdMessages[0].id
-          }/${uuidv4()}`
+        let filePath = `${profile.user_id}/${currentChat.id}/${
+          createdMessages[0].id
+        }/${uuidv4()}`
 
         return uploadMessageImage(filePath, obj.file as File).catch(error => {
           console.error(`Failed to upload image at ${filePath}:`, error)

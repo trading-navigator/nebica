@@ -21,9 +21,9 @@ import { useChatHistoryHandler } from "./chat-hooks/use-chat-history"
 import { usePromptAndCommand } from "./chat-hooks/use-prompt-and-command"
 import { useSelectFileHandler } from "./chat-hooks/use-select-file-handler"
 
-interface ChatInputProps { }
+interface ChatInputProps {}
 
-export const ChatInput: FC<ChatInputProps> = ({ }) => {
+export const ChatInput: FC<ChatInputProps> = ({}) => {
   const { t } = useTranslation()
 
   useHotkey("l", () => {
@@ -215,7 +215,6 @@ export const ChatInput: FC<ChatInputProps> = ({ }) => {
         <div className="absolute bottom-[76px] left-0 max-h-[300px] w-full overflow-auto rounded-xl dark:border-none">
           <ChatCommandInput />
         </div>
-
 
         <IconCirclePlus
           className="absolute bottom-[12px] left-3 cursor-pointer p-1 hover:opacity-50"

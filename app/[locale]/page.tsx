@@ -82,25 +82,21 @@ export default function HomePage() {
 
       {/* 🌟 Logo Section (placed on top) */}
       <motion.div
-  initial={{ scale: 0 }}
-  animate={{ scale: 1 }}
-  transition={{ type: "spring", stiffness: 200, damping: 20 }}
-  className="z-10 my-6 flex items-center justify-center"
->
-  <div
-    className="
+        initial={{ scale: 0 }}
+        animate={{ scale: 1 }}
+        transition={{ type: "spring", stiffness: 200, damping: 20 }}
+        className="z-10 my-6 flex items-center justify-center"
+      >
+        <div
+          className="
     
       drop-shadow-[20px_20px_20px_rgba(255,255,255,2.5)] 
     
     "
-  >
-    <ChatbotUISVG theme="light" scale={0.6} />
-  </div>
-</motion.div>
-
-
-
-
+        >
+          <ChatbotUISVG theme="light" scale={0.6} />
+        </div>
+      </motion.div>
 
       {/* 🌟 Text Content */}
       <HomepageTextAnnimation />

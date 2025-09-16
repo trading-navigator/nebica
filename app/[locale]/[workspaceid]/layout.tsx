@@ -19,7 +19,6 @@ import { LLMID } from "@/types"
 import { useParams, useRouter } from "next/navigation"
 import { ReactNode, useContext, useEffect, useState } from "react"
 import Loading from "../loading"
-import { getGuestWorkspace } from "@/db/guest-handler"
 
 interface WorkspaceLayoutProps {
   children: ReactNode
@@ -159,9 +158,7 @@ export default function WorkspaceLayout({ children }: WorkspaceLayoutProps) {
     setModels(modelData.models)
 
     setChatSettings({
-      model: (searchParams.get("model") ||
-        workspace?.default_model ||
-        "gpt-4-1106-preview") as LLMID,
+      model: (workspace?.default_model || "gpt-4-1106-preview") as LLMID,
       prompt:
         workspace?.default_prompt ||
         "You are a friendly, helpful AI assistant.",
@@ -181,13 +178,21 @@ export default function WorkspaceLayout({ children }: WorkspaceLayoutProps) {
     const guestWorkspace = {
       id: "guest",
       name: "Guest Workspace",
-      default_model: "Nebica Ai",
+      default_model: "Nebica",
       default_prompt: "You are a friendly, helpful AI assistant.",
       default_temperature: 0.5,
       default_context_length: 4096,
       embeddings_provider: "openai",
       include_profile_context: true,
-      include_workspace_instructions: true
+      include_workspace_instructions: true,
+      created_at: new Date().toISOString(),
+      description: "This is a guest workspace.",
+      image_path: "",
+      instructions: "You are a friendly, helpful AI assistant.",
+      is_home: false,
+      sharing: "private",
+      updated_at: new Date().toISOString(),
+      user_id: "guest"
     }
 
     setSelectedWorkspace(guestWorkspace)

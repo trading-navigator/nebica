@@ -196,12 +196,11 @@ export const ChatUI: FC<ChatUIProps> = ({}) => {
           scrollToBottom={scrollToBottom}
         />
       </div>
-{/* 
+      {/* 
       <div className="absolute right-4 top-1 flex h-[40px] items-center space-x-2">
         <ChatSecondaryButtons />
       </div> */}
 
-     
       <div
         className="flex size-full flex-col overflow-auto border-b"
         onScroll={handleScroll}

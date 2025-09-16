@@ -10,12 +10,45 @@ export async function GET(request: Request) {
   if (code) {
     const cookieStore = cookies()
     const supabase = createClient(cookieStore)
-    await supabase.auth.exchangeCodeForSession(code)
+
+    // Exchange code for session
+    const { error } = await supabase.auth.exchangeCodeForSession(code)
+    if (error) {
+      return NextResponse.redirect(
+        requestUrl.origin +
+          `/login?message=${encodeURIComponent(error.message)}`
+      )
+    }
+
+    // Get current session
+    const {
+      data: { session }
+    } = await supabase.auth.getSession()
+
+    if (session) {
+      // Look up home workspace
+      const { data: homeWorkspace } = await supabase
+        .from("workspaces")
+        .select("*")
+        .eq("user_id", session.user.id)
+        .eq("is_home", true)
+        .single()
+
+      if (homeWorkspace) {
+        return NextResponse.redirect(
+          `${requestUrl.origin}/${homeWorkspace.id}/chat`
+        )
+      }
+
+      // If no home workspace, send to setup
+      return NextResponse.redirect(`${requestUrl.origin}/setup`)
+    }
   }
 
+  // Fallback: if no session or code
   if (next) {
     return NextResponse.redirect(requestUrl.origin + next)
-  } else {
-    return NextResponse.redirect(requestUrl.origin)
   }
+
+  return NextResponse.redirect(requestUrl.origin)
 }

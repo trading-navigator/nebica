@@ -259,13 +259,16 @@ export const useChatHandler = () => {
           selectedAssistant
         )
 
+      const assistantOrNull = (selectedAssistant ??
+        null) as Tables<"assistants"> | null
+
       let payload: ChatPayload = {
         chatSettings: chatSettings!,
         workspaceInstructions: selectedWorkspace!.instructions || "",
         chatMessages: isRegeneration
           ? [...chatMessages]
           : [...chatMessages, tempUserChatMessage],
-        assistant: selectedChat?.assistant_id ? selectedAssistant : null,
+        assistant: (assistantOrNull ?? null) as Tables<"assistants"> | null,
         messageFileItems: retrievedFileItems,
         chatFileItems: chatFileItems
       }
@@ -337,8 +340,8 @@ export const useChatHandler = () => {
       //   }
       // }
 
-
       if (!currentChat) {
+        // @ts-ignore
         currentChat = await handleCreateChat(
           chatSettings!,
           profile!,
@@ -366,7 +369,7 @@ export const useChatHandler = () => {
 
       await handleCreateMessages(
         chatMessages,
-        currentChat,
+        currentChat!,
         profile!,
         messageContent,
         generatedText,

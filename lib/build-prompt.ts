@@ -44,11 +44,12 @@ export async function buildFinalMessages(
     chatFileItems
   } = payload
 
+  // @ts-ignore
   const BUILT_PROMPT = buildBasePrompt(
     chatSettings.prompt,
     chatSettings.includeProfileContext ? profile?.profile_context || "" : "",
     chatSettings.includeWorkspaceInstructions ? workspaceInstructions : "",
-    assistant
+    assistant!
   )
 
   const CHUNK_SIZE = chatSettings.contextLength
@@ -166,8 +167,9 @@ export async function buildFinalMessages(
 
     finalMessages[finalMessages.length - 1] = {
       ...finalMessages[finalMessages.length - 1],
-      content: `${finalMessages[finalMessages.length - 1].content
-        }\n\n${retrievalText}`
+      content: `${
+        finalMessages[finalMessages.length - 1].content
+      }\n\n${retrievalText}`
     }
   }
 

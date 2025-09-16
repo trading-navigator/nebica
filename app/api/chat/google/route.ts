@@ -14,7 +14,9 @@ export async function POST(request: Request) {
   try {
     // const profile = await getServerProfile()
 
-    const genAI = new GoogleGenerativeAI("AIzaSyDtJ6Xea0o8Sfz_uuQ7RYW7KTl3Yh9mk9I")
+    const genAI = new GoogleGenerativeAI(
+      "AIzaSyDtJ6Xea0o8Sfz_uuQ7RYW7KTl3Yh9mk9I"
+    )
     const googleModel = genAI.getGenerativeModel({ model: "gemini-2.0-flash" })
     const lastMessage = messages.pop()
 

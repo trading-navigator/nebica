@@ -15,7 +15,7 @@ export const ChatbotUISVG: FC<ChatbotUISVGProps> = ({ theme, scale = 1 }) => {
       width={500 * scale}
       height={200 * scale}
       style={{
-        filter: theme === "dark" ? "invert(1)" : "invert(0)",
+        filter: theme === "dark" ? "invert(1)" : "invert(0)"
       }}
     />
   )
